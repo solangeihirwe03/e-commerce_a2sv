@@ -462,8 +462,8 @@
                 "tags": [
                     "User Routes"
                 ],
-                "summary": "A buyer should be able to view products",
-                "description": "This endpoint allow a buyer to view all products available",
+                "summary": "A user should be able to view products",
+                "description": "This endpoint allow a user to view all products available",
                 "parameters": [
                     {
                         "in": "query",
@@ -881,8 +881,8 @@
                 "tags": [
                     "User Routes"
                 ],
-                "summary": "A buyer should be able to should to search products",
-                "description": "This endpoint allow a buyer to search products according to different filters",
+                "summary": "A user should be able to should to search products",
+                "description": "This endpoint allow a user to search products according to different filters",
                 "parameters": [
                     {
                         "in": "query",
@@ -991,7 +991,7 @@
         "/orders": {
             "post": {
                 "tags": [
-                    "Buyer Routes"
+                    "User Routes"
                 ],
                 "summary": "Place a new order",
                 "description": "Allows an authenticated user to place an order for one or more products. Each item must include a valid productId and quantity.",
@@ -1153,8 +1153,8 @@
                 "tags": [
                     "User Routes"
                 ],
-                "summary": "Get Orders for Buyer",
-                "description": "Retrieve all orders associated with the authenticated buyer",
+                "summary": "Get Orders for user",
+                "description": "Retrieve all orders associated with the authenticated user",
                 "security": [
                     {
                         "bearerAuth": []

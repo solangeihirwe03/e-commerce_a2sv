@@ -19,8 +19,8 @@ router.put(
   "/admin-update-product/:productId",
   userAuthorization(["admin"]),
   isProductExist,
-  upload.single("images"),
   validation(productUpdateSchema),
+  upload.single("images"),
   productController.userUpdateProduct
 );
 

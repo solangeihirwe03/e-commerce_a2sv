@@ -48,9 +48,7 @@ const userUpdateProduct = async (req: ExtendRequest, res: Response): Promise<any
         return res.status(StatusCodes.OK).json({
             status:StatusCodes.OK,
             message: "Product updated successfullty!",
-            data: {
-                updateProduct
-            }
+            updateProduct
         })
   } catch (error: any) {
     res
