@@ -3,6 +3,8 @@ import { StatusCodes } from 'http-status-codes';
 import cors from "cors";
 import "./database/config/config"
 import router from './routers';
+import swaggerUi from "swagger-ui-express";
+import Document from "../swagger.json"
 
 const app= express();
 app.use(express.json());
@@ -15,6 +17,7 @@ app.get("/", (req:Request, res:Response)=> {
     })
 })
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(Document))
 app.use("/", router)
 const port = process.env.PORT || 7000;
 

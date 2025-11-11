@@ -7,7 +7,9 @@ const registerUser = async (req:Request, res:Response): Promise<void>=>{
     try{
         const register = await userRepo.createUser(req.body);
         res.status(StatusCodes.CREATED).json({
+            status:StatusCodes.CREATED,
             message: "Account created successfully",
+            success: true,
             data: {user: register}
         })
     }catch(error: any){
@@ -23,6 +25,7 @@ const loginUser = async(req: any, res:Response)=> {
         const token = generateToken(req.user.id)
         res.status(StatusCodes.OK).json({
             status: StatusCodes.OK,
+            success: true,
             message: "Logged in Successfully",
             data: {token}
         })

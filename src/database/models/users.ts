@@ -1,13 +1,15 @@
 import { Model, DataTypes, Optional } from "sequelize";
 import sequelizeConnection from "../config/db.config";
 import { hashPassword } from "../../helpers";
+import Products from "./products";
+import Orders from "./orders";
 
 export interface usersAttributes {
     id: string;
     username: string;
     email: string;
     password: string;
-    role?:string;
+    role:string;
     createdAt?: Date;
     updatedAt?: Date;
 }
@@ -18,8 +20,15 @@ class Users extends Model<usersAttributes, UsersCreationAttributes> implements u
     declare username: string;
     declare email: string;
     declare password: string;
+    declare role: string;
     declare createdAt: Date;
     declare updatedAt: Date;
+
+    static associate() {
+        Users.hasMany(Products, { foreignKey: "userId", as: "products",onDelete: "CASCADE" });
+        Users.hasMany(Orders, { foreignKey: 'userId' });
+
+      }
 }
 
 Users.init(
@@ -44,7 +53,7 @@ Users.init(
         },
         role: {
             type: DataTypes.STRING(128),
-            allowNull: true,
+            allowNull: false,
             defaultValue:"user"
         },
         createdAt: {

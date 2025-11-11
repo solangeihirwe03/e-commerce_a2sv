@@ -1,0 +1,1246 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "E-commerce-A2SV",
+        "description": "APIs for the E-commerce-A2SV Project",
+        "termsOfService": "https://github.com/solangeihirwe03/e-commerce_a2sv/blob/main/README.md",
+        "license": {
+            "name": "ISC"
+        }
+    },
+    "host": "localhost:9000",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Initial Route",
+            "description": "Initial/Fake Endpoint | GET Route"
+        },
+        {
+            "name": "Authentication Routes",
+            "description": "Authentication Endpoint | POST Route"
+        },
+        {
+            "name": "Admin Routes",
+            "description": "Admin Endpoint"
+        },
+        {
+            "name": "User Routes",
+            "description": "User Endpoint"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "username": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Products": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "integer"
+                    },
+                    "stock": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "userId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Orders": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "userId": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "totalPrice": {
+                        "type": "number"
+                    },
+                    "orderDate": {
+                        "type": "date"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "OrderProducts": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "orderId": {
+                        "type": "string"
+                    },
+                    "productId": {
+                        "type": "string"
+                    },
+                    "quantity": {
+                        "type": "number"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "Initial Route"
+                ],
+                "summary": "Handle Initial / Wrong GET Route",
+                "description": "By using the initial/wrong GET endpoint, you will see a welcome message (Welcome to E-Commerce-Ninja-BackEnd)",
+                "responses": {
+                    "200": {
+                        "description": "Success. (Welcome to E-Commerce APIs.)"
+                    }
+                }
+            }
+        },
+        "/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication Routes"
+                ],
+                "summary": "Register a new user",
+                "description": "This endpoint allows for registering a new user by providing the required details.",
+                "requestBody": {
+                    "description": "User registration details",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "required": [
+                                    "username",
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Account created successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "$ref": "#/components/schemas/User"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication Routes"
+                ],
+                "summary": "Login User",
+                "description": "Login a registered user by providing Email and Password",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "yourpassword"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful"
+                    },
+                    "400": {
+                        "description": "Invalid credentials / Bad request"
+                    }
+                }
+            }
+        },
+        "/products/create-product": {
+            "post": {
+                "tags": [
+                    "Admin Routes"
+                ],
+                "summary": "Admin creates a product",
+                "description": "This endpoint allows an admin to create/add a new product, including a single optional image.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "images": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": "Optional: Upload a single product image"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name of the product"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description of the product"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "description": "Price of the product"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Category of the product"
+                                    },
+                                    "stock": {
+                                        "type": "number",
+                                        "description": "Available stock for the product"
+                                    }
+                                },
+                                "required": [
+                                    "name",
+                                    "price",
+                                    "category",
+                                    "stock"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Product created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "stock": {
+                                                    "type": "number"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "images": {
+                                                    "type": "string",
+                                                    "format": "uri",
+                                                    "description": "URL of the uploaded product image"
+                                                },
+                                                "userId": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing or invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Collection not found or Product already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/user-get-products": {
+            "get": {
+                "tags": [
+                    "User Routes"
+                ],
+                "summary": "A buyer should be able to view products",
+                "description": "This endpoint allow a buyer to view all products available",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": "1"
+                        },
+                        "description": "Number of rows"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "example": "1"
+                        },
+                        "description": "Page number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/admin-update-product/{productId}": {
+            "put": {
+                "tags": [
+                    "Admin Routes"
+                ],
+                "summary": "Update or modify a product by ID",
+                "description": "Allows an admin to update product details using the product ID.",
+                "parameters": [
+                    {
+                        "name": "productId",
+                        "in": "path",
+                        "required": true,
+                        "description": "The ID of the product to update",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "images": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "description": " Upload a product image"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name of the product"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "description": "Description of the product"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "description": "Price of the product"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "description": "Category of the product"
+                                    },
+                                    "stock": {
+                                        "type": "number",
+                                        "description": "Available stock of the product"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Product updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "string"
+                                                },
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "bonus": {
+                                                    "type": "integer"
+                                                },
+                                                "discount": {
+                                                    "type": "string"
+                                                },
+                                                "category": {
+                                                    "type": "string"
+                                                },
+                                                "expiryDate": {
+                                                    "type": "string",
+                                                    "format": "date"
+                                                },
+                                                "quantity": {
+                                                    "type": "number"
+                                                },
+                                                "images": {
+                                                    "type": "string",
+                                                    "format": "uri",
+                                                    "description": "URL of the updated product image"
+                                                },
+                                                "userId": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Missing or invalid parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/products/user-get-product-by-id/{productId}": {
+            "get": {
+                "tags": [
+                    "User Routes"
+                ],
+                "summary": "Get specific item",
+                "description": "The user should get specific item by its id",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Pass the ID"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products fetched successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No product found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/delete-product/{productId}": {
+            "delete": {
+                "tags": [
+                    "Admin Routes"
+                ],
+                "summary": "Delete Item",
+                "description": "Deletes a specific item from a seller's shop.",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID of the shop to which the product belongs",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Item deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "description": "Success message",
+                                            "example": "Item deleted successfully"
+                                        }
+                                    },
+                                    "401": {
+                                        "description": "Unauthorized access (missing or invalid token)"
+                                    },
+                                    "403": {
+                                        "description": "Forbidden access (non-seller user trying to delete)"
+                                    },
+                                    "404": {
+                                        "description": "Item not found",
+                                        "content": {
+                                            "application/json": {
+                                                "schema": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        " error": {
+                                                            "type": "string",
+                                                            "description": "Error message",
+                                                            "example": "Item not found"
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "400": {
+                                        "description": "Bad request (e.g., missing or invalid itemId)"
+                                    },
+                                    "500": {
+                                        "description": "Internal Server Error"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search-products": {
+            "get": {
+                "tags": [
+                    "User Routes"
+                ],
+                "summary": "A buyer should be able to should to search products",
+                "description": "This endpoint allow a buyer to search products according to different filters",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "minprice",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Minimum price"
+                    },
+                    {
+                        "in": "query",
+                        "name": "maxprice",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Maximum price"
+                    },
+                    {
+                        "in": "query",
+                        "name": "category",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "category of the product"
+                    },
+                    {
+                        "in": "query",
+                        "name": "name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "description": "Product name"
+                    },
+                    {
+                        "in": "query",
+                        "name": "limit",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Number of rows"
+                    },
+                    {
+                        "in": "query",
+                        "name": "page",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        },
+                        "description": "Page number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Products retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "BAD request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders": {
+            "post": {
+                "tags": [
+                    "Buyer Routes"
+                ],
+                "summary": "Place a new order",
+                "description": "Allows an authenticated user to place an order for one or more products. Each item must include a valid productId and quantity.",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "productId": {
+                                            "type": "string",
+                                            "format": "uuid",
+                                            "description": "UUID of the product to order"
+                                        },
+                                        "quantity": {
+                                            "type": "integer",
+                                            "minimum": 1,
+                                            "description": "Quantity of the product to order"
+                                        }
+                                    },
+                                    "required": [
+                                        "productId",
+                                        "quantity"
+                                    ]
+                                }
+                            },
+                            "example": [
+                                {
+                                    "productId": "a1b2c3d4-e5f6-7890-abcd-1234567890ab",
+                                    "quantity": 2
+                                },
+                                {
+                                    "productId": "f1e2d3c4-b5a6-7890-abcd-0987654321fe",
+                                    "quantity": 1
+                                }
+                            ]
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Order placed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "orderId": {
+                                                    "type": "string"
+                                                },
+                                                "status": {
+                                                    "type": "string"
+                                                },
+                                                "totalPrice": {
+                                                    "type": "number"
+                                                },
+                                                "createdAt": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request - Invalid input or missing fields",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Missing or invalid token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Product not found or insufficient stock",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/orders-history": {
+            "get": {
+                "tags": [
+                    "User Routes"
+                ],
+                "summary": "Get Orders for Buyer",
+                "description": "Retrieve all orders associated with the authenticated buyer",
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Orders found successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "orders": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "string"
+                                                            },
+                                                            "status": {
+                                                                "type": "string"
+                                                            },
+                                                            "createdAt": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            },
+                                                            "updatedAt": {
+                                                                "type": "string",
+                                                                "format": "date-time"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Orders not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer"
+                                        },
+                                        "error": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
